@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+{%block body_block%}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-2"></div>
+        <div class="col-lg-8 col-md-8">
+            <h2 class="text-center mt-3 ">Edit Your Profile Here !</h2>
+            <hr>
+            <form class="" action="" method="post" enctype="multipart/form-data">
+                {%if user.profile_pic%}
+                        <div class="text-center">
+                            <img  style="max-height: 200px ; max-width: 100%" src="{{ user.profilepics.url }}" alt="">
+                        </div>
+                {%endif%}
+                {%csrf_token%}
+                {{form.as_p}}
+                <div class=" text-center ">
+                    <input class="text-primary fw-bold border border-black mt-4 mb-5" style=" background-color: aliceblue; " type="submit" value="Update" >
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-2 col-md-8"></div>
+    </div>
+</div>
+
+
+{%endblock%}

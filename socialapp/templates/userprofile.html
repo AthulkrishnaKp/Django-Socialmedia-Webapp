@@ -1,0 +1,156 @@
+{%extends 'base.html'%}
+
+
+{%block body_block%}
+
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-4 col-md-3"></div>
+        <div class="col-lg-4 col-md-6 text-center">
+            {%if user.profile_pic%}
+            <img style="height: 200px ; width: 200px;" class=" border border-3 border-dark rounded-circle"
+                src="{{user.profile_pic.url}}" alt=".." />
+            {%endif%}
+            <p class="fw-bolder fs-3 mt-3">Iam {{user.first_name}} {{user.last_name}}</p>
+        </div>
+        <div class="col-lg-4 col-md-3"></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-2"></div>
+        <div class="col-lg-6 col-md-8">
+
+            <h5 class="text-bolder text-center">{{user.bio}}
+            </h5>
+            <h5 class="mt-5">User Name : {{user.username}}
+    
+            <a href="{% url 'follow' user.id %}" style="margin-left :100px;" type="button" class="btn btn-sm btn-primary">
+                Follow</a>
+            <a href="{% url 'unfollow' user.id %}"  type="button" class="btn btn-sm btn-primary">
+                UnFollow</a>    
+                
+
+            </h5>
+            <h5>Location : {{user.location}}</h5>
+
+
+        </div>
+        <div class="col-lg-3 col-md-2">
+
+        </div>
+    </div>
+</div>
+
+
+<hr class="mt-5">
+
+
+<div class="container mt-5">
+    <div style="min-height: 400px;" class="row">
+
+        {% for p in post %}
+        <!-- <div class="col-lg-3 col-md-2"></div> -->
+        <div align="center" class="col-lg-4 col-md-6 col-sm-10">
+            <div>
+                <!-- Blog post-->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        
+                        {%if p.images%}
+                        <a href="{% url 'postdetail' p.id %}"><img style="max-height: 350px;min-height:350px;max-width: 100%;" class="card-img-top"
+                            src="{{p.images.url}}" alt="..." /></a>
+                        {%else%}
+                        <a class="text-decoration-none text-black" href="{% url 'postdetail' p.id %}">
+                            <h2 class="card-title">{{p.caption}} {{p.id}} </h2>
+                        </a>
+                        {%endif%}
+                        <h5 class="text-center mt-2">{{p.caption}}</h5>
+                        <div class="small text-muted">{{p.created_date}}</div>
+
+
+                        <div class="card border-0 mt-4">
+                            <div class="row">
+
+
+                                <div class="col-12">
+
+
+                                    <div style="margin-left:0;">
+                                        <form style="max-width: 100px; display: inline-block; " action="" method="post">
+                                            {%csrf_token%}
+                                            {% if request.user in p.no_of_likes.all %}
+                                            <p class="border-0">
+                                                <a class="ms-2 fa-regular fa-heart fa-solid text-danger text-decoration-none"
+                                                    href="{%url 'unlike' p.id%}"></a>
+                                                {{p.no_of_likes.all.count}} Likes
+
+                                                {%else%}
+                                            <p class="border-0">
+                                                <a class="ms-2 fa-regular fa-heart text-dark text-decoration-none"
+                                                    href="{%url 'like' p.id%}"></a>
+                                                {{p.no_of_likes.all.count}} Likes
+
+                                                {%endif%}
+                                        </form>
+                                        <a style="margin-left: 18%;" class="btn btn-primary rounded "
+                                            data-bs-toggle="collapse" href="#collapseExample{{p.id}}" role="button"
+                                            aria-expanded="false" aria-controls="collapseExample">
+                                            Comments
+                                        </a>
+
+                                        <div class="collapse" id="collapseExample{{p.id}}">
+                                            <div class="card card-body">
+                                                
+                                                {%for c in comments%}
+                                                {% if p.id == c.post_id %}
+                                                <div class="card mb-2">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-10">
+                                                                <div align="left">
+                                                                    <h6>{{c.comments}}</h6>                                    
+                                                                    {% if request.user == c.user%}
+                                                                        <a class="text-muted text-decoration-none mt-0 mb-0 p-0" href="{% url 'profile'%}">{{c.user}}</a>                                                                                                         
+                                                                    {%else%}
+                                                                        <a class="text-muted text-decoration-none mt-0 mb-0 p-0" href="{% url 'allusers' c.user.id  %}">{{c.user}}</a>
+                                                                    {%endif%}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-2">
+                                                                {% if request.user.id == c.user.id %}
+                                                                    <a href="{% url 'commentdelete' c.id%}"><i class="fa-solid text-danger fa-trash-can"></i></a>
+                                                                {%endif%}
+                                                            </div>
+                                                        </div>
+            
+
+                                                    </div>
+                                                </div>
+                                                {%endif%}
+                                                {%endfor%}
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-lg-3 col-md-2"></div> -->
+
+        {%endfor%}
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+{%endblock%}

@@ -1,0 +1,221 @@
+{%extends 'base.html'%}
+{%block body_block%}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4 text-center">
+            {%if messages%}
+                {%for msg in messages%}
+                    {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{msg}}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                    {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{msg}}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-4 col-md-3 col-sm-2">
+
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-8 text-center">
+            {%if request.user.profile_pic%}
+            <img style="height: 200px ; width: 200px;" class=" border border-3 border-dark rounded-circle"
+                src="{{request.user.profile_pic.url}}" alt=".." />
+            {%endif%}
+            <p class="fw-bolder fs-3 mt-3">Iam {{user.first_name}} {{user.last_name}}</p>
+        </div>
+        <div class="col-lg-4 col-md-3 col-sm-2">
+            <a href="{% url 'profileupdate' user.id%}" class="btn btn-sm btn-primary mt-3" role="button" aria-disabled="true">Edit</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-2" ></div>
+        <div class="col-lg-6 col-md-8">
+
+            <h5 class="text-bolder text-center">{{user.bio}}</h5>
+            
+
+        </div>
+        <div class="col-lg-3 col-md-2">
+            
+        </div>
+    </div>
+</div>
+
+
+<!-- {{followers.all.count}}
+{% for f in followers %}
+    {{f.followers}}
+{%endfor%}
+
+
+{% for f in following%}
+    {{f.user}}
+{%endfor%}     -->
+
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a style="min-width: 130px ;" class="btn btn-sm btn-primary px-3" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                Followers <span style="height:10px ;width: 10px; background-color: white;" class="rounded-circle text-primary px-2 py-1">{{followers.all.count}} </span>
+            </a>         
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+  <div style="background-color: rgb(204, 200, 200);"  class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+    <h5  class="offcanvas-title " id="offcanvasExampleLabel">     </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-0"></div>
+                <div class="col-11">
+                    {% for f in followers %}
+                    <a class="text-decoration-none " href="{% url 'allusers' f.followers.id  %}">
+                        <div style="background-color: rgb(151, 146, 146);" class="card mb-3 shadow-sm ">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <img style="height: 100px ;width: 80px;" class="rounded-circle border border-1 border-white" src="{{f.followers.profile_pic.url}}" alt="">
+                                    </div>
+                                    <div class="text-center text-black fw-bold mt-3 col-8">
+                                        <span >{{f.followers}}</span>
+                                        <div >{{f.followers.first_name}} {{f.followers.last_name}}</div>                                   
+                                    </div>              
+                                 </div>
+                            </div>
+                        </div>
+                    </a>  
+                    {%endfor%}                             
+                </div>
+                <div class="col-1"></div>
+            </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+
+
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <a style="min-width: 130px;" class="btn btn-sm btn-primary px-3" data-bs-toggle="offcanvas" href="#offcanvasExamplefollowing" role="button" aria-controls="offcanvasExamplefollowing">
+                Following <span style="height:10px ;width: 10px; background-color: white;" class="rounded-circle text-primary px-2 py-1">{{following.all.count}} </span>
+            </a>
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>
+</div>
+<div style="background-color: rgb(204, 200, 200);" class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExamplefollowing" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel1"> </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <div class="container">
+          <div class="row">
+              <div class="col-0"></div>
+              <div class="col-11">
+                  {% for f in following %}
+                  <a class="text-decoration-none " href="{% url 'allusers' f.user.id  %}">
+                      <div style="background-color: rgb(151, 146, 146) ;" class="card mb-3 shadow-sm ">
+                          <div class="card-body">
+                              <div class="row">
+                                  <div class="col-4">
+                                      <img style="height: 100px ;width: 80px;" class="rounded-circle border border-1 border-white" src="{{f.user.profile_pic.url}}" alt="">
+                                  </div>
+                                  <div class="text-center text-black fw-bold mt-3 col-8">
+                                      <span >{{f.user}}</span>
+                                      <div >{{f.user.first_name}} {{f.user.last_name}}</div>                                 
+                                  </div>                              
+                               </div>
+                          </div>
+                      </div>
+                  </a>  
+                  {%endfor%}                             
+              </div>
+              <div class="col-1"></div>
+          </div>
+      </div>
+    </div>
+  </div> 
+</div>
+
+
+
+
+
+
+
+
+
+<!-- {{user.followers}} -->
+<!-- {% for f in follow.user %}
+    {{f}}
+{%endfor%}
+{{follow.user}} -->
+
+<hr class="mt-5">
+
+<div class="container mt-5">
+    <div style="min-height: 400px;" class="row">
+
+        {% for p in profile %}
+
+        <div align="center"  class="col-lg-4 col-md-6 col-sm-10">
+            <div>
+                <!-- Blog post-->
+                <div style="background-color: rgba(184, 174, 174, 0) ;" class="border-0 card mb-4">
+                    <div class="card-body">
+                        
+                        {%if p.images%}
+                        <a href="{% url 'postdetail' p.id %}"><img style="max-height: 350px;min-height:350px;max-width: 100%;"
+                                class="card-img-top " src="{{p.images.url}}" alt="..." /></a>
+                        {%else%}    
+                        <a class="text-decoration-none text-black" href="{% url 'postdetail' p.id %}"><h2 class="card-title h4">{{p.caption}} {{p.id}} </h2></a>    
+                        {%endif%}                                                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {%endfor%}
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+{%endblock%}
