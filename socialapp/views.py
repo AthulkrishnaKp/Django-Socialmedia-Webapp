@@ -11,8 +11,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 
 
-# Create your views here.
-
 def signin_required(fn):
     def wrapper(request,*args,**kwargs):
         if not request.user.is_authenticated:

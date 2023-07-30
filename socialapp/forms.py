@@ -52,10 +52,3 @@ class CommentForm(forms.ModelForm):
             "comments":forms.Textarea(attrs={"class":"form-control border border-warning mt-2","rows":3,"placeholder":"write your comment.."}),
         }
 
-
-
-
-# class PostUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model=Post
-#         fields=["caption","images"]    
