@@ -57,7 +57,7 @@
 <div align="center"><img src="screenshots/users3.png" width="600" height="350" title="user data"></div>
 <br/>
 
-## <em>Chat Screen : (Under Development)</em>
+## <em>Chat Screen</em>
 <br/><br/>
 <div align="center"><img src="screenshots/message.png" width="600" height="350" title="user data"></div>
 <br/>
